@@ -64,6 +64,18 @@ const Login = ({ setErrorMessage }) => {
         icon={FaGoogle}
         text="Continue with Google"
       />
+      <LButton
+        lfunc={auth.FacebookAuthProvider}
+        setError={setErrorMessage}
+        icon={FaFacebook}
+        text="Continue with Facebook"
+      />
+      <LButton
+        lfunc={auth.GithubAuthProvider}
+        setError={setErrorMessage}
+        icon={FaGithub}
+        text="Continue with Github"
+      />
     </React.Fragment>
   )
 }

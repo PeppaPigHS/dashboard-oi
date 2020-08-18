@@ -6,6 +6,7 @@ import { Global, css } from '@emotion/core'
 import { CSSReset, ThemeProvider, theme, DefaultTheme } from '@chakra-ui/core'
 
 import { PageLayout } from 'components/Layout'
+import UserProvider from 'components/UserContext'
 
 export default class CustomApp extends App {
   public render() {
@@ -36,9 +37,11 @@ export default class CustomApp extends App {
             }
           `}
         />
-        <PageLayout>
-          <Component {...pageProps} />
-        </PageLayout>
+        <UserProvider>
+          <PageLayout>
+            <Component {...pageProps} />
+          </PageLayout>
+        </UserProvider>
       </ThemeProvider>
     )
   }
