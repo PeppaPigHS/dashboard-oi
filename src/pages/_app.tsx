@@ -5,7 +5,7 @@ import Head from 'next/head'
 import { Global, css } from '@emotion/core'
 import { CSSReset, ThemeProvider, theme, DefaultTheme } from '@chakra-ui/core'
 
-import { PageLayout } from '../components/Layout'
+import { PageLayout } from 'components/Layout'
 
 export default class CustomApp extends App {
   public render() {
