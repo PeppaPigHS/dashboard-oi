@@ -13,7 +13,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
   Stack,
 } from '@chakra-ui/core'
 import { FiMenu, FiX } from 'react-icons/fi'
@@ -33,10 +32,7 @@ const leftMenu: IMenu[] = [
   { key: 'checklist', name: 'Checklist', path: '/checklist' },
 ]
 
-const rightMenu: IMenu[] = [
-  { key: 'signup', name: 'Sign Up', path: '/signup' },
-  { key: 'login', name: 'Login', path: '/login' },
-]
+const rightMenu: IMenu[] = [{ key: 'login', name: 'Login', path: '/login' }]
 
 const generateMenuItems = (menu: IMenu[], pathname: string) => {
   const location = pathname.split('/')[1]
@@ -125,17 +121,10 @@ export const Nav = () => {
                 <Menu>
                   <MenuButton as={Box}>
                     <Stack isInline mt={[4, 0]}>
-                      <Text color="gray.500">
-                        Welcome, {user.username || user.user.displayName}
-                      </Text>
+                      <Text color="gray.500">{user.username}</Text>
                     </Stack>
                   </MenuButton>
                   <MenuList>
-                    <MenuItem>Dashboard</MenuItem>
-                    <MenuItem onClick={() => router.push('/setusername')}>
-                      Change Username
-                    </MenuItem>
-                    <MenuDivider></MenuDivider>
                     <MenuItem
                       onClick={() => {
                         firebase
