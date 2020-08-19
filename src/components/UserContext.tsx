@@ -1,9 +1,10 @@
 import React, { useContext, useReducer, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 
 import firebase from 'lib/firebase'
 
 import { fetchFromFirebase } from 'utils/fetcher'
+
+import { Loading } from 'components/Loading'
 
 type User = firebase.User | null
 
@@ -66,9 +67,7 @@ const reducer = (state: UserState, action: UserAction): UserState => {
         loading: false,
       })
     case 'LOADING_START':
-      return Object.assign({}, state, {
-        loading: true,
-      })
+      return Object.assign({}, state, initialState)
     default:
       return state
   }
@@ -85,8 +84,6 @@ const userContextComp = ({ children }) => {
   const [userState, userDispatch] = useReducer<
     React.Reducer<UserState, UserAction>
   >(reducer, initialState)
-
-  const router = useRouter()
 
   const [triggerFetch, setTriggerFetch] = useState<boolean>(false)
 
@@ -115,8 +112,6 @@ const userContextComp = ({ children }) => {
     }
   }, [triggerFetch, userState.user.user])
 
-  useEffect(() => {}, [userState.user.user])
-
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user === null || user.emailVerified) {
@@ -132,19 +127,14 @@ const userContextComp = ({ children }) => {
     }
   }, [])
 
-  useEffect(() => {
-    if (
-      userState.user.user !== null &&
-      userState.loading === false &&
-      userState.user.username === ''
-    ) {
-      router.push('/setusername')
-    }
-  }, [userState, router.pathname])
-
   return (
     <UserStateContext.Provider value={{ ...userState, userDispatch }}>
-      {children}
+      {userState.user.user === undefined ||
+      (userState.loading === true && userState.user.user !== null) ? (
+        <Loading />
+      ) : (
+        children
+      )}
     </UserStateContext.Provider>
   )
 }
