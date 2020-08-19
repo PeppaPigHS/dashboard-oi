@@ -34,31 +34,30 @@ export const Dashboard = () => {
 
           <Divider></Divider>
 
-          <Flex
-            mt="10"
-            justify="center"
-            direction={{ base: 'column', sm: 'row' }}
-          >
-            <Button
-              mr={[0, 4]}
-              mb={[4, 0]}
-              px="40px"
-              fontSize="1.2rem"
-              variantColor="teal"
-              leftIcon={FaArrowRight}
-            >
-              <Link href={user.user ? '/checklist' : '/login'}>
-                <a>Get Started</a>
-              </Link>
-            </Button>
-            <Button px="40px" fontSize="1.2rem" leftIcon={FaGithub}>
-              <a
-                href="https://github.com/PeppaPigHS/dashboard-oi"
-                target="__blank"
-              >
-                GitHub
+          <Flex mt={10} justify="center" direction={['column', 'row']}>
+            <Link href={user.user ? '/checklist' : '/login'}>
+              <a>
+                <Button
+                  h={12}
+                  mr={[0, 4]}
+                  mb={[4, 0]}
+                  px={10}
+                  fontSize="1.2rem"
+                  variantColor="teal"
+                  leftIcon={FaArrowRight}
+                >
+                  Get Started
+                </Button>
               </a>
-            </Button>
+            </Link>
+            <a
+              href="https://github.com/PeppaPigHS/dashboard-oi"
+              target="__blank"
+            >
+              <Button h={12} px={10} fontSize="1.2rem" leftIcon={FaGithub}>
+                GitHub
+              </Button>
+            </a>
           </Flex>
         </Box>
       </Box>
