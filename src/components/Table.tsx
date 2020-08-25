@@ -1,9 +1,5 @@
 import React, { useMemo } from 'react'
 
-import styled from '@emotion/styled'
-
-import { Heading } from '@chakra-ui/core'
-
 import { genID } from 'utils/genID'
 
 import { useUser } from 'components/UserContext'
@@ -23,7 +19,7 @@ export const Table = () => {
       {data.map((competition: ICompetition) => {
         return (
           <React.Fragment>
-            <Heading my={4}>{competition.name}</Heading>
+            <p className="my-4 text-3xl">{competition.name}</p>
             <table>
               {competition.contests.map((contest: IContest) => {
                 return (

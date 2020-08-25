@@ -1,14 +1,15 @@
 import React from 'react'
 
-import { Flex } from '@chakra-ui/core'
-
+import { PageLayout } from 'components/Layout'
 import { Table } from 'components/Table'
 
 const Checklist = () => {
   return (
-    <Flex direction="column" px={20} py={4} overflow="auto">
-      <Table />
-    </Flex>
+    <PageLayout page="checklist">
+      <div className="flex flex-col px-20 py-4 overflow-auto">
+        <Table />
+      </div>
+    </PageLayout>
   )
 }
 
