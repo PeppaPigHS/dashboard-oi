@@ -10,7 +10,7 @@ type User = firebase.User | null
 
 export interface Data {
   username: string
-  checklist: string[][]
+  checklist: Object
 }
 
 type UserData = { user: User | undefined } & Data
@@ -42,7 +42,7 @@ const initialState: UserState = {
   user: {
     user: undefined,
     username: '',
-    checklist: [],
+    checklist: {},
   },
   loading: true,
 }
