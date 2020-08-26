@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 
 import { Transition } from '@tailwindui/react'
 
@@ -19,6 +19,54 @@ const loginWith = async (auth: authtype) => {
     await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
     return firebase.auth().signInWithPopup(provider)
   } catch (error) {}
+}
+
+const Movement = ({
+  onClose,
+  show,
+  enter,
+  enterFrom,
+  enterTo,
+  leave,
+  leaveFrom,
+  leaveTo,
+  children,
+}) => {
+  const ref = useRef(null)
+  const escapeListener = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      onClose(false)
+    }
+  }, [])
+  const clickListener = useCallback(
+    (e: MouseEvent) => {
+      if (!(ref.current! as any).contains(e.target)) {
+        onClose?.(false)
+      }
+    },
+    [ref.current]
+  )
+  useEffect(() => {
+    document.addEventListener('click', clickListener)
+    document.addEventListener('keyup', escapeListener)
+    return () => {
+      document.removeEventListener('click', clickListener)
+      document.removeEventListener('keyup', escapeListener)
+    }
+  }, [])
+  return (
+    <Transition
+      show={show}
+      enter={enter}
+      enterFrom={enterFrom}
+      enterTo={enterTo}
+      leave={leave}
+      leaveFrom={leaveFrom}
+      leaveTo={leaveTo}
+    >
+      <div ref={ref}>{children}</div>
+    </Transition>
+  )
 }
 
 export const Nav = ({ page }) => {
@@ -79,7 +127,8 @@ export const Nav = ({ page }) => {
                     <span className="mx-4 text-md">{user.username}</span>
                   </button>
                 </div>
-                <Transition
+                <Movement
+                  onClose={setIsOpen}
                   show={isOpen}
                   enter="transition ease-out duration-200"
                   enterFrom="transform opacity-0 scale-95"
@@ -95,7 +144,7 @@ export const Nav = ({ page }) => {
                       aria-orientation="vertical"
                       aria-labelledby="user-menu"
                     >
-                      <a
+                      <button
                         onClick={() => {
                           firebase
                             .auth()
@@ -110,10 +159,10 @@ export const Nav = ({ page }) => {
                         role="menuitem"
                       >
                         Sign out
-                      </a>
+                      </button>
                     </div>
                   </div>
-                </Transition>
+                </Movement>
               </div>
             </div>
           ) : (
@@ -128,7 +177,8 @@ export const Nav = ({ page }) => {
                     <span>Login</span>
                   </button>
                 </div>
-                <Transition
+                <Movement
+                  onClose={setIsOpen}
                   show={isOpen}
                   enter="transition ease-out duration-100"
                   enterFrom="transform opacity-0 scale-95"
@@ -145,7 +195,7 @@ export const Nav = ({ page }) => {
                         aria-orientation="vertical"
                         aria-labelledby="options-menu"
                       >
-                        <a
+                        <button
                           onClick={() => loginWith(auth.GoogleAuthProvider)}
                           className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 inline-flex items-center w-full"
                           role="menuitem"
@@ -162,8 +212,8 @@ export const Nav = ({ page }) => {
                             />
                           </svg>
                           <span>Login With Google</span>
-                        </a>
-                        <a
+                        </button>
+                        <button
                           onClick={() => loginWith(auth.FacebookAuthProvider)}
                           className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 inline-flex items-center w-full"
                           role="menuitem"
@@ -180,8 +230,8 @@ export const Nav = ({ page }) => {
                             />
                           </svg>
                           <span>Login With Facebook</span>
-                        </a>
-                        <a
+                        </button>
+                        <button
                           onClick={() => loginWith(auth.GithubAuthProvider)}
                           className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 inline-flex items-center w-full"
                           role="menuitem"
@@ -198,11 +248,11 @@ export const Nav = ({ page }) => {
                             />
                           </svg>
                           <span>Login With Github</span>
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </div>
-                </Transition>
+                </Movement>
               </div>
             </div>
           )}
